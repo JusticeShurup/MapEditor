@@ -1,0 +1,11 @@
+_ null
+snow Tilesets/snow.png
+a Tilesets/asphalt.png
+aswhrdlnl Tilesets/asphalt_with_roadline_left.png
+c Tilesets/cross.png
+h Tilesets/road_horizontal.png
+H Tilesets/road_horizontal2.png
+v Tilesets/road_vertical.png
+V Tilesets/road_vertical2.png
+l Tilesets/turn_left.png
+r Tilesets/turn_right.png
