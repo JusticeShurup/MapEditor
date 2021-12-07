@@ -24,6 +24,7 @@ public:
 	void render();
 
 private: 
+	Tileset test_tileset;
 	sf::RenderWindow *window;
 	sf::Event *event;
 	TextureContainer* textureContainer;

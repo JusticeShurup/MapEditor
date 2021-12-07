@@ -5,6 +5,7 @@ Tileset::Tileset() {
 	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
 	shape->setOutlineColor(sf::Color::Green);
 	texture = nullptr;
+	sost = 1;
 }
 
 Tileset::Tileset(sf::Vector2f position) {
@@ -14,20 +15,37 @@ Tileset::Tileset(sf::Vector2f position) {
 	texture = nullptr;
 }
 
-Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f position) {
+Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f position, uint8_t sost) {
 	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
 	shape->setOutlineColor(sf::Color::Green);
 	this->sign = sign;
 	setTexture(filename);
 	setPosition(position);
+	setSost(sost);
 }
 
-Tileset::Tileset(sf::Texture* texture, std::string sign, sf::Vector2f position) {
+Tileset::Tileset(sf::Texture* texture, std::string sign, sf::Vector2f position, uint8_t sost) {
 	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
 	shape->setOutlineColor(sf::Color::Green);
 	this->sign = sign;
 	setPosition(position);
 	setTexture(texture);
+	setSost(sost);
+}
+
+Tileset::~Tileset() {
+}
+
+void Tileset::copyTexture(sf::Texture* texture) {
+	sf::Image image;
+	image = texture->copyToImage();
+	const sf::Uint8* pixels = image.getPixelsPtr();
+
+	this->texture->update(pixels);
+}
+
+void Tileset::setImage(sf::Texture* texture) {
+	image = texture->copyToImage();
 }
 
 void Tileset::setSign(std::string sign) {
@@ -39,7 +57,8 @@ std::string Tileset::getSign() {
 }
 
 void Tileset::setTexture(std::string filename) {
-	if (filename != "null") {
+	if (filename != "null") { 
+		texture = new sf::Texture();
 		texture->loadFromFile(filename);
 		shape->setTexture(texture);
 	}
@@ -55,6 +74,24 @@ void Tileset::setTexture(sf::Texture* texture) {
 
 sf::Texture* Tileset::getTexture() {
 	return texture;
+}
+
+sf::Image Tileset::getImage() {
+	return image;
+}
+
+void Tileset::setSost(uint8_t sost) {
+	if (sost > 4) {
+		sost = 1;
+	}
+	else if (sost < 1) {
+		sost = 4;
+	}
+	this->sost = sost;
+}
+
+uint8_t Tileset::getSost() {
+	return sost;
 }
 
 void Tileset::setPosition(float x, float y) {
