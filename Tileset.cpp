@@ -10,13 +10,14 @@ Tileset::Tileset() {
 
 Tileset::Tileset(sf::Vector2f position) {
 	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
-	shape->setOutlineColor(sf::Color::Green);
 	shape->setPosition(position);
+	shape->setOutlineColor(sf::Color::Green);
 	texture = nullptr;
+	temp_texture = nullptr;
 }
 
-Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f position, uint8_t sost) {
-	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
+Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f size, sf::Vector2f position, uint8_t sost) {
+	shape = new sf::RectangleShape(size);
 	shape->setOutlineColor(sf::Color::Green);
 	this->sign = sign;
 	setTexture(filename);
@@ -24,8 +25,8 @@ Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f position, 
 	setSost(sost);
 }
 
-Tileset::Tileset(sf::Texture* texture, std::string sign, sf::Vector2f position, uint8_t sost) {
-	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
+Tileset::Tileset(sf::Texture* texture, std::string sign, sf::Vector2f size, sf::Vector2f position, uint8_t sost) {
+	shape = new sf::RectangleShape(size);
 	shape->setOutlineColor(sf::Color::Green);
 	this->sign = sign;
 	setPosition(position);
@@ -70,6 +71,14 @@ void Tileset::setTexture(std::string filename) {
 void Tileset::setTexture(sf::Texture* texture) {
 	this->texture = texture;
  	shape->setTexture(this->texture);
+}
+
+void Tileset::setTempTexture(sf::Texture* texture) {
+	this->temp_texture = texture;
+}
+
+sf::Texture* Tileset::getTempTexture() {
+	return temp_texture;
 }
 
 sf::Texture* Tileset::getTexture() {

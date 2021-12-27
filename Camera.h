@@ -11,6 +11,9 @@ public:
 
 	void update(sf::Event& event);
 
+	void setCanZoom(bool can_zoom);
+	bool getIsZoomed();
+
 	void setCenter(float x, float y);
 	void setCenter(sf::Vector2f center);
 	void setSize(float x, float y);
@@ -22,5 +25,8 @@ private:
 	sf::Vector2f size;
 	sf::Vector2f center;
 	float zoom_coefficient;
+
+	bool can_zoom;
+	bool is_zoomed;
 };
 #endif

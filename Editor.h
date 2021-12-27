@@ -2,14 +2,16 @@
 #define _EDITOR_H_
 #include "TileSet.h"
 #include "SFML/System.hpp"
+#include <SFML/Window.hpp>
 #include <vector>
 #include "TextureContainer.h"
+#include "TilesetsMenu.h"
 
 class Editor
 {
 public: 
 	Editor();
-	Editor(sf::RenderWindow* window, sf::Event *event);
+	Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera);
 	~Editor();
 
 	void initWindow();
@@ -18,21 +20,26 @@ public:
 
 	void rotateCurrentTileset(int8_t direction);// 1 - Clockwise, -1 - CounterClockWise
 
-	void update();
+	void update(Camera& camera);
 	void updateFile();
 
 	void render();
 
-private: 
-	Tileset test_tileset;
+private:
+
 	sf::RenderWindow *window;
 	sf::Event *event;
+	Camera* camera;
+
 	TextureContainer* textureContainer;
 
 	std::vector<std::vector<std::string>> map;
 	std::vector<std::vector<Tileset>> tilesets;
-	std::vector<std::vector<Tileset>> tilesets_palette;
 
 	Tileset* currentTileset;
+	bool can_set_tileset;
+
+	TilesetsMenu tilesets_menu;
+
 };
 #endif

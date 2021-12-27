@@ -14,11 +14,11 @@ public:
 	sf::Image* getImage(std::string sign);
 	
 	sf::Texture* getTexture(std::string sign, uint8_t sost);
-
-	sf::Texture* getTexture(std::string sign);
 	std::string getLink(std::string sign);
 
 	std::vector<sf::Texture*> getTextures();
+	std::map<std::string, std::map<uint8_t, sf::Texture*>> getTexturesByCathegory(std::string category_name);
+
 	std::vector<std::string> getSigns();
 	std::vector<std::string> getLinks();
 
@@ -28,9 +28,10 @@ private:
 	TextureContainer();
 
 	std::map<std::string, sf::Image*> alphabet_images;
-	std::map<std::string, sf::Texture*> alphabet_textures; // sign - texture
 
-	std::map<std::string, std::map<uint8_t, sf::Texture*>> alphabet_textures1;
+	std::map<std::string, std::map<std::string, std::map<uint8_t, sf::Texture*>>> alphabet_textures_pallete;
+
+	std::map<std::string, std::map<uint8_t, sf::Texture*>> alphabet_textures;
 
 	std::map<std::string, std::string> alphabet_links;
 
@@ -45,4 +46,3 @@ private:
 	static TextureContainer* instance;
 };
 #endif
-

@@ -125,10 +125,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\SFML 2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -143,18 +144,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureContainer.cpp" />
     <ClCompile Include="Tileset.cpp" />
+    <ClCompile Include="TilesetsMenu.cpp" />
+    <ClCompile Include="TilesetsMenuMainState.cpp" />
+    <ClCompile Include="TilesetsMenuPaletteState.cpp" />
+    <ClCompile Include="TilesetsMenuState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="TextureContainer.h" />
     <ClInclude Include="Tileset.h" />
+    <ClInclude Include="TilesetsMenu.h" />
+    <ClInclude Include="TilesetsMenuMainState.h" />
+    <ClInclude Include="TilesetsMenuPaletteState.h" />
+    <ClInclude Include="TilesetsMenuState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

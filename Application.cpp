@@ -2,13 +2,13 @@
 #include <iostream>
 
 Application::Application() :
-	camera(100, 100, 100, 100)
+	camera(1920 / 2, 1920 / 2, 1920, 1080)
 {
 	window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "YaroslaveMapEditor");
 	window->setView(camera.getView());
 	
 	is_running = false;
-	editor = Editor(window, &event);
+	editor = new Editor(window, &event, &camera);
 }
 
 Application::~Application() {}
@@ -28,13 +28,13 @@ void Application::update() {
 			window->close();
 		}
 	}
-	editor.update();
 	camera.update(event);
 	window->setView(camera.getView());
+	editor->update(camera);
 }
 
 void Application::render() {
 	window->clear();
-	editor.render();
+	editor->render();
 	window->display();
 }

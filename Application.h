@@ -18,7 +18,6 @@ private:
 	sf::Event event;
 
 	Camera camera;
-	Editor editor;
+	Editor* editor;
 };
-
 #endif

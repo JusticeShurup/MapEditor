@@ -1,4 +1,5 @@
 #include "TextureContainer.h"
+#include <string>
 #include <iostream>
 
 TextureContainer* TextureContainer::instance = nullptr;
@@ -7,39 +8,49 @@ TextureContainer::TextureContainer() {
 	std::ifstream file("TextureAlphabet.txt");
 	std::string sign;
 	std::string filename;
-	while (file >> sign >> filename) {
-		if (sign != "_") {
+	while (true) {
+		file >> sign >> filename;
+		int tilesets_size = std::atoi(filename.c_str());
+		std::string category_name = sign;
+		
+		std::map<std::string, std::map<uint8_t, sf::Texture*>> alphabet_textures_for_pallete;
+		for (int i = 0; i < tilesets_size; i++) {
+			file >> sign >> filename;
+
 			sf::Image* image = new sf::Image;
-			sf::Texture *texture = new sf::Texture;
+			sf::Texture* texture = new sf::Texture;
 
 			image->loadFromFile(filename);
 			texture->loadFromFile(filename);
-			
+
 			alphabet_images.emplace(sign, image);
+
 			std::map<uint8_t, sf::Texture*> map;
 			map[1] = texture;
-			alphabet_textures1.emplace(sign, map);
+			alphabet_textures.emplace(sign, map);
+			alphabet_textures_for_pallete.emplace(sign, map);
+
 			for (int i = 2; i <= 4; i++) {
-				std::cout << i << std::endl;
-				alphabet_textures1[sign].emplace(i, rotateTexture(alphabet_textures1[sign][i-1]));
+				alphabet_textures[sign].emplace(i, rotateTexture(alphabet_textures[sign][i - 1]));
+				alphabet_textures_for_pallete[sign].emplace(i, rotateTexture(alphabet_textures_for_pallete[sign][i - 1]));
 			}
 
-			alphabet_textures.emplace(sign, texture);
 			alphabet_links.emplace(sign, filename);
 			signs.push_back(sign);
 			textures.push_back(texture);
 			links.push_back(filename);
 		}
+		alphabet_textures_pallete.emplace(category_name, alphabet_textures_for_pallete);
+		if (file.eof()) {
+			file.close();
+			return;
+		}
 	}
-	file.close();
 }
 
 sf::Texture* TextureContainer::getTexture(std::string sign, uint8_t sost) {
-	return alphabet_textures1[sign][sost];
-}
-
-sf::Texture* TextureContainer::getTexture(std::string sign) {
-	return alphabet_textures[sign];
+	if (sost < 1 || sost > 4) sost = 1;
+	return alphabet_textures[sign][sost];
 }
 
 std::string TextureContainer::getLink(std::string sign) {
@@ -48,6 +59,10 @@ std::string TextureContainer::getLink(std::string sign) {
 
 std::vector<sf::Texture*> TextureContainer::getTextures() {
 	return textures;
+}
+
+std::map<std::string, std::map<uint8_t, sf::Texture*>> TextureContainer::getTexturesByCathegory(std::string cathegory_name){
+	return alphabet_textures_pallete[cathegory_name];
 }
 
 std::vector<std::string> TextureContainer::getSigns() {
@@ -63,7 +78,7 @@ sf::Texture* TextureContainer::rotateTexture(sf::Texture* texture) {
 	const sf::Uint8* pixels = image.getPixelsPtr();
 
 	std::vector<std::vector<sf::Color>> texture_in_pixels;
-	sf::Uint8* pix = new sf::Uint8[64 * 64 * 4];
+	sf::Uint8* pix = new sf::Uint8[32 * 32 * 4];
 
 	int count = 0;
 	for (int i = 0; i < 32 * 32 * 4; i += 4) {

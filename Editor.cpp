@@ -1,32 +1,29 @@
 #include "Editor.h"
 #include <fstream>
-#include <iostream>
 #include <string>
 
-void printMap(char map[40][50]) {
-	for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 50; j++)
-			std::cout << map[i][j];
-		std::cout << std::endl;
-	}
-}
+Editor::Editor()
+	: tilesets_menu(TilesetsMenu(sf::Vector2f(1920/3, 1080), sf::Vector2f(0, 0), currentTileset)), 
+	  camera(new Camera(1920/2, 1920/2, 1000, 1000))
+{}
 
-Editor::Editor(){}
-
-Editor::Editor(sf::RenderWindow* window, sf::Event *event) 
+Editor::Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera) :
+	tilesets_menu(TilesetsMenu(sf::Vector2f(1920/3, 1080), sf::Vector2f(0, 0), currentTileset)),
+	camera(camera)
 {
+
+	can_set_tileset = true;
 	currentTileset = new Tileset();
 	textureContainer = TextureContainer::getInstance();
 	this->window = window;
 	this->event = event;
 	initMap();
 	initWindow();
-	initPalette();
 
-	currentTileset->setImage(TextureContainer::getInstance()->getTexture("a"));
+	currentTileset->setImage(TextureContainer::getInstance()->getTexture("a", 1));
 	currentTileset->setTexture(TextureContainer::getInstance()->getLink("a"));
 	currentTileset->setSign(TextureContainer::getInstance()->getSigns()[1]);
-
+	tilesets_menu.setCurrentTileset(currentTileset);
 }
 
 Editor::~Editor(){}
@@ -41,7 +38,8 @@ void Editor::initWindow(){
 			sign = sign.substr(0, sign.size()-2);
 
 
-			tileset.emplace_back(Tileset(TextureContainer::getInstance()->getTexture(sign, sost), sign, sf::Vector2f(j * 34 + 5, i * 34 + 5), sost));
+			tileset.emplace_back(Tileset(TextureContainer::getInstance()->getTexture(sign, sost), sign, sf::Vector2f(32, 32), sf::Vector2f(j * 34 + 5, i * 34 + 5), sost));
+			tileset[j].setTempTexture(TextureContainer::getInstance()->getTexture(sign, sost));
 
 
 		}
@@ -58,23 +56,12 @@ void Editor::initMap() {
 			f >> str;
 			string.push_back(str);
 		}
-		std::cout << std::endl;
 		map.push_back(string);
 	}
 	f.close();
 }
 
 void Editor::initPalette() {
-	std::vector<Tileset> tilesets;
-	std::vector<sf::Texture*> textures = TextureContainer::getInstance()->getTextures();
-	std::vector<std::string> signs = TextureContainer::getInstance()->getSigns();
-	std::vector<std::string> links = TextureContainer::getInstance()->getLinks();
-
-	for (int i = 0; i < textures.size(); i++) {
-		tilesets.push_back(Tileset(links[i], signs[i], sf::Vector2f(i * -34 - 64, 5), 1));
-	}
-
-	tilesets_palette.push_back(tilesets);
 }
 
 void Editor::rotateCurrentTileset(int8_t direction) {
@@ -91,13 +78,13 @@ void Editor::rotateCurrentTileset(int8_t direction) {
 
 }
 
-void Editor::update(){
+void Editor::update(Camera& camera){
 	
 	float x = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x;
 	float y = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y;
-	
-	currentTileset->setPosition(x - currentTileset->getShape()->getGlobalBounds().width / 2,
-								y - currentTileset->getShape()->getGlobalBounds().width / 2);
+
+	tilesets_menu.update(*event, camera, sf::Vector2f(x, y));
+	can_set_tileset = !tilesets_menu.contains(sf::Vector2f(x, y));
 
 	if (event->type == sf::Event::KeyReleased) {
 		if (event->key.code == sf::Keyboard::Left) rotateCurrentTileset(-1);
@@ -114,45 +101,32 @@ void Editor::update(){
 		for (auto& tileset : t) {
 			if (tileset.getShape()->getGlobalBounds().contains(x, y)) {
 				tileset.getShape()->setOutlineThickness(2);
-				if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Left || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+				tileset.setTexture(currentTileset->getTexture());
+				if ((event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Left || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) && can_set_tileset) {
 					if (tileset.getSign() != currentTileset->getSign()) {
-						tileset.setTexture(currentTileset->getTexture());
+						tileset.setTempTexture(currentTileset->getTexture());
 						tileset.setSign(currentTileset->getSign());
 						map[i][j] = currentTileset->getSign() + "S" + std::to_string(int(currentTileset->getSost()));
 						updateFile();
 					}
 				}
-				else if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Right) {
-					tileset.setTexture(nullptr);
+				else if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Right || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && can_set_tileset) {
+					if (tileset.getSign() != "snowS1") {
+						tileset.setTempTexture(TextureContainer::getInstance()->getTexture("snow", 1));
+						tileset.setSign("snowS1");
+						map[i][j] = "snowS1";
+						updateFile();
+					}
 				}
 			}
 			else {
+				tileset.setTexture(tileset.getTempTexture());
 				tileset.getShape()->setOutlineThickness(0);
 			}
 			j++;
 		}
 		i++;
-	}
-
-	for (auto& tilesets : tilesets_palette) {
-		for (auto& tileset : tilesets) {
-			if (tileset.getShape()->getGlobalBounds().contains(x, y)) {
-				tileset.getShape()->setOutlineThickness(2);
-				if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Left) {
-					currentTileset->setSost(1);
-					currentTileset->setImage(TextureContainer::getInstance()->getTexture(tileset.getSign()));
-					currentTileset->setTexture(TextureContainer::getInstance()->getLink(tileset.getSign()));
-					currentTileset->setSign(tileset.getSign());
-				}
-			}
-			else
-			{
-				tileset.getShape()->setOutlineThickness(0);
-			}
-
-		}
-	}
-			
+	}		
 }
 
 void Editor::updateFile() {
@@ -173,11 +147,6 @@ void Editor::render() {
 			window->draw(tileset);
 		}
 	}
-	for (auto& tilesets : tilesets_palette) {
-		for (auto& tileset : tilesets) {
-			window->draw(tileset);
-		}
-	}
-	window->draw(*currentTileset);
 
+	if(!camera->getIsZoomed()) window->draw(tilesets_menu);
 }

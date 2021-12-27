@@ -6,8 +6,8 @@ class Tileset : public sf::Drawable
 public: 
 	Tileset();
 	Tileset(sf::Vector2f position);
-	Tileset(std::string filename, std::string sign, sf::Vector2f position, uint8_t sost);
-	Tileset(sf::Texture* texture, std::string sign, sf::Vector2f position, uint8_t sost);
+	Tileset(std::string filename, std::string sign, sf::Vector2f size, sf::Vector2f position, uint8_t sost);
+	Tileset(sf::Texture* texture, std::string sign, sf::Vector2f size, sf::Vector2f position, uint8_t sost);
 
 	~Tileset();
 
@@ -16,6 +16,9 @@ public:
 	void setImage(sf::Texture* texture);
 	void setTexture(std::string filename);
 	void setTexture(sf::Texture* texture);
+	void setTempTexture(sf::Texture* texture);
+
+	sf::Texture* getTempTexture();
 	sf::Texture* getTexture();
 	sf::Image getImage();
 
@@ -44,6 +47,7 @@ private:
 	
 	sf::Image image;
 	sf::Texture* texture;
+	sf::Texture* temp_texture;
 	std::string sign;
 	uint8_t sost;
 };
