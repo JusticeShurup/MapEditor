@@ -148,6 +148,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuMainState.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="TextureContainer.cpp" />
     <ClCompile Include="Tileset.cpp" />
     <ClCompile Include="TilesetsMenu.cpp" />
@@ -160,6 +163,9 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuMainState.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="TextureContainer.h" />
     <ClInclude Include="Tileset.h" />
     <ClInclude Include="TilesetsMenu.h" />

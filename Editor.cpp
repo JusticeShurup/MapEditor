@@ -23,6 +23,7 @@ Editor::Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera) :
 	currentTileset->setImage(TextureContainer::getInstance()->getTexture("a", 1));
 	currentTileset->setTexture(TextureContainer::getInstance()->getLink("a"));
 	currentTileset->setSign(TextureContainer::getInstance()->getSigns()[1]);
+	currentTileset->getShape()->setSize(sf::Vector2f(64, 64));
 	tilesets_menu.setCurrentTileset(currentTileset);
 }
 
@@ -79,7 +80,6 @@ void Editor::rotateCurrentTileset(int8_t direction) {
 }
 
 void Editor::update(Camera& camera){
-	
 	float x = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x;
 	float y = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y;
 
@@ -89,8 +89,6 @@ void Editor::update(Camera& camera){
 	if (event->type == sf::Event::KeyReleased) {
 		if (event->key.code == sf::Keyboard::Left) rotateCurrentTileset(-1);
 		else if (event->key.code == sf::Keyboard::Right) rotateCurrentTileset(1);
-		currentTileset->setPosition(x - currentTileset->getShape()->getGlobalBounds().width / 2,
-									y - currentTileset->getShape()->getGlobalBounds().width / 2);
 		event->type = sf::Event::MouseMoved;
 	}
 
@@ -126,7 +124,7 @@ void Editor::update(Camera& camera){
 			j++;
 		}
 		i++;
-	}		
+	}
 }
 
 void Editor::updateFile() {

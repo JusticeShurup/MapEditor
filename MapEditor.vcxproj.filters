@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\MenuStates">
+      <UniqueIdentifier>{61ba3c73-8a29-4472-a24a-be79043e7933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\MenuStates">
+      <UniqueIdentifier>{cbcc3965-9c1d-448e-9df7-5a709d748b27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +54,15 @@
     <ClCompile Include="Button.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Исходные файлы\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuMainState.cpp">
+      <Filter>Исходные файлы\MenuStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor.h">
@@ -79,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Файлы заголовков\MenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuMainState.h">
+      <Filter>Файлы заголовков\MenuStates</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

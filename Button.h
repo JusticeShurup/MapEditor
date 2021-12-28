@@ -23,6 +23,8 @@ public:
 	void setPosition(float x, float y);
 	void setPosition(sf::Vector2f postion);
 	sf::Text getText();
+	void setColor(sf::Color);
+
 
 	void update(sf::Vector2f pos, sf::Event& event);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;

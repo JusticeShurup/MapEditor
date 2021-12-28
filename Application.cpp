@@ -4,14 +4,28 @@
 Application::Application() :
 	camera(1920 / 2, 1920 / 2, 1920, 1080)
 {
-	window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "YaroslaveMapEditor");
+	window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "YaroslaveMapEditor", sf::Style::Fullscreen);
 	window->setView(camera.getView());
 	
 	is_running = false;
 	editor = new Editor(window, &event, &camera);
+	menu = new Menu(this);
+	active = true;
+	pause = true;
 }
 
-Application::~Application() {}
+Application::~Application() {
+	delete window;
+	delete editor;
+}
+
+void Application::setPause(bool pause) {
+	this->pause = pause;
+}
+
+void Application::close() {
+	is_running = false;
+}
 
 void Application::run() {
 	is_running = true;
@@ -19,6 +33,7 @@ void Application::run() {
 		update();
 		render();
 	}
+	window->close();
 }
 
 void Application::update() {
@@ -27,14 +42,33 @@ void Application::update() {
 			is_running = false;
 			window->close();
 		}
+		if (event.type == sf::Event::LostFocus) {
+			active = false;
+		}
+		else if (event.type == sf::Event::GainedFocus) {
+			active = true;
+		}
+		if (event.type == sf::Event::KeyReleased) {
+			if (event.key.code == sf::Keyboard::Escape) {
+				pause = !pause;
+			}
+		}
 	}
-	camera.update(event);
-	window->setView(camera.getView());
-	editor->update(camera);
+	if (active && !pause) {
+		camera.update(event);
+		window->setView(camera.getView());
+		editor->update(camera);
+	}
+	else if (active) {
+		camera.getView().setCenter(1920 / 2, 1080 / 2);
+		window->setView(camera.getView());
+		menu->update(event, sf::Vector2f(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x, window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y));
+	}
 }
 
 void Application::render() {
 	window->clear();
-	editor->render();
+	if (!pause) editor->render();
+	else window->draw(*menu);
 	window->display();
 }

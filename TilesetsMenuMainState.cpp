@@ -20,6 +20,9 @@ void TilesetsMenuMainState::update(sf::Event& event, Camera& camera, sf::Vector2
 	sf::Vector2f position(camera.getView().getCenter().x - camera.getView().getSize().x / 2,
 						  camera.getView().getCenter().y - camera.getView().getSize().y / 2);
 	
+	current_tileset->setPosition(position.x + tilesets_menu->getGlobalBounds().width - current_tileset->getShape()->getGlobalBounds().width * 2,
+								 position.y + current_tileset->getShape()->getGlobalBounds().height);
+
 	for (int i = 0; i < buttons.size(); i++) {
 		buttons[i]->setPosition(position.x + tilesets_menu->getGlobalBounds().width / 2 - buttons[i]->getText().getGlobalBounds().width / 2, position.y + buttons[i]->getText().getGlobalBounds().height + 100 * (i+1));
 		buttons[i]->update(mouse_pos, event);
@@ -34,4 +37,5 @@ void TilesetsMenuMainState::render(sf::RenderTarget& target) {
 	for (auto button : buttons) {
 		target.draw(*button);
 	}
+	target.draw(*current_tileset);
 }

@@ -8,6 +8,8 @@ Button::Button(float widht, float height, float posX, float posY, std::string na
 	: widht(widht), height(height), posX(posX), posY(posY), buttonText(name) 
 {
 
+	textIdleColor = sf::Color::Black;
+
 	state = BTN_IDLE;
 	shape = RectangleShape(Vector2f(widht, height));
 	shape.setPosition(Vector2f(posX, posY));
@@ -61,6 +63,10 @@ void Button::setPosition(sf::Vector2f position) {
 					 position.y);
 }
 
+void Button::setColor(sf::Color color) {
+	textIdleColor = color;
+}
+
 sf::Text Button::getText() {
 	return text;
 }
@@ -83,7 +89,7 @@ void Button::update(Vector2f pos, Event& event) {
 	case BTN_IDLE:
 		this->shape.setFillColor(Color::White);
 		this->shape.setOutlineThickness(0);
-		this->text.setFillColor(Color::Black);
+		this->text.setFillColor(textIdleColor);
 		this->shape.setOutlineColor(Color::White);
 		break;
 
@@ -103,7 +109,7 @@ void Button::update(Vector2f pos, Event& event) {
 
 	default:
 		this->shape.setFillColor(Color::White);
-		this->text.setFillColor(Color::Black);
+		this->text.setFillColor(textIdleColor);
 		this->shape.setOutlineColor(Color::White);
 		break;
 	}
