@@ -15,5 +15,7 @@ public:
 
 private: 
 	std::vector<Button*> buttons;
+
+	sf::Texture* main_texture;
 };
 #endif

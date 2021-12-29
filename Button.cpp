@@ -23,6 +23,10 @@ Button::Button(float widht, float height, float posX, float posY, std::string na
 	text.setString(name);
 	text.setPosition(shape.getPosition().x + ((shape.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2)),
 					 shape.getPosition().y);
+
+	buffer.loadFromFile("Sounds/menu_item_howered.wav");
+	sound.setBuffer(buffer);
+	can_play_sound = true;
 }
 
 Button::Button(float widht, float height, float posX, float posY, std::string name, unsigned int letters_size)
@@ -77,11 +81,17 @@ void Button::update(Vector2f pos, Event& event) {
 	if (shape.getGlobalBounds().contains(pos) || text.getGlobalBounds().contains(pos))
 	{
 		state = BTN_HOVER;
+
+		if (can_play_sound) sound.play();
+		can_play_sound = false;
 		//Pressed
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left)
 		{
 			state = BTN_ACTIVE;
 		}
+	}
+	else {
+		can_play_sound = true;
 	}
 
 	switch (state)

@@ -4,7 +4,8 @@
 Application::Application() :
 	camera(1920 / 2, 1920 / 2, 1920, 1080)
 {
-	window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "YaroslaveMapEditor", sf::Style::Fullscreen);
+	settings.antialiasingLevel = 10;
+	window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "YaroslaveMapEditor", sf::Style::Fullscreen, settings);
 	window->setView(camera.getView());
 	
 	is_running = false;

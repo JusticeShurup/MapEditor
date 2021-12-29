@@ -17,6 +17,7 @@ public:
 private: 
 	std::vector<Tileset*> tilesets_palette;
 
+	sf::Texture* pallete_texture;
 	sf::Texture* arrow_texture;
 	sf::Texture* main_menu_texture;
 

@@ -14,7 +14,7 @@ TilesetsMenu::TilesetsMenu(sf::Vector2f size, sf::Vector2f position, Tileset* cu
 	open_menu_button = sf::RectangleShape(sf::Vector2f(100, 100));
 	open_menu_button.setTexture(&open_menu_button_texture);
 
-	background_texture.loadFromFile("menu_texture.png");
+	background_texture.loadFromFile("main_tilesetmenu.png");
 	background = sf::RectangleShape(size);
 	background.setPosition(position);
 	background.setTexture(&background_texture);
@@ -36,6 +36,10 @@ void TilesetsMenu::setPosition(sf::Vector2f position) {
 
 sf::FloatRect TilesetsMenu::getGlobalBounds() {
 	return background.getGlobalBounds();
+}
+
+sf::RectangleShape* TilesetsMenu::getBackground() {
+	return &background;
 }
 
 sf::Vector2f TilesetsMenu::getPosition() {
@@ -74,7 +78,7 @@ bool TilesetsMenu::open() {
 
 void TilesetsMenu::update(sf::Event& event, Camera& camera, sf::Vector2f mouse_pos) {
 	
-	if (open_menu_button.getGlobalBounds().contains(mouse_pos) && event.type == sf::Event::MouseButtonReleased) {
+	if (open_menu_button.getGlobalBounds().contains(mouse_pos) && event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
 		camera.setCanZoom(!open());
 	}
 

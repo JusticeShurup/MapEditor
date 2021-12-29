@@ -18,6 +18,8 @@ public:
 
 private: 
 	sf::RenderWindow* window;
+	sf::ContextSettings settings;
+
 	bool is_running;
 	bool active;
 	bool pause; 

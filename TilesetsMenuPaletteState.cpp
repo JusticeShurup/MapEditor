@@ -11,6 +11,8 @@ TilesetsMenuPaletteState::TilesetsMenuPaletteState(TilesetsMenu* tilesets_menu, 
 	category_name = new sf::Text(name, font, 50);
 	category_name->setFillColor(sf::Color::Red);
 
+	pallete_texture = new sf::Texture;
+	pallete_texture->loadFromFile("palette_tilesetmenu.png");
 	arrow_texture = new sf::Texture;
 	main_menu_texture = new sf::Texture;
 
@@ -18,6 +20,7 @@ TilesetsMenuPaletteState::TilesetsMenuPaletteState(TilesetsMenu* tilesets_menu, 
 	arrow_right_button = new sf::RectangleShape(sf::Vector2f(64, 64));
 	main_menu_button = new sf::RectangleShape(sf::Vector2f(64, 64));
 
+	tilesets_menu->getBackground()->setTexture(pallete_texture);
 	arrow_texture->loadFromFile("button2.png");
 	main_menu_texture->loadFromFile("menu.png");
 	
@@ -37,9 +40,11 @@ TilesetsMenuPaletteState::~TilesetsMenuPaletteState() {
 	delete arrow_texture;
 	delete main_menu_texture;
 
+	delete pallete_texture;
 	delete arrow_left_button;
 	delete arrow_right_button;
 	delete main_menu_button;
+
 	for (auto& tileset : tilesets_palette) delete tileset;
 
 	delete category_name;

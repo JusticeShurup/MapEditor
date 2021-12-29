@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include <fstream>
+#include <iostream>
 #include <string>
 
 Editor::Editor()
@@ -24,6 +25,7 @@ Editor::Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera) :
 	currentTileset->setTexture(TextureContainer::getInstance()->getLink("a"));
 	currentTileset->setSign(TextureContainer::getInstance()->getSigns()[1]);
 	currentTileset->getShape()->setSize(sf::Vector2f(64, 64));
+
 	tilesets_menu.setCurrentTileset(currentTileset);
 }
 
@@ -37,12 +39,8 @@ void Editor::initWindow(){
 			std::string sign = map[i][j];
 			int sost = sign[sign.size()-1] - '0';
 			sign = sign.substr(0, sign.size()-2);
-
-
 			tileset.emplace_back(Tileset(TextureContainer::getInstance()->getTexture(sign, sost), sign, sf::Vector2f(32, 32), sf::Vector2f(j * 34 + 5, i * 34 + 5), sost));
 			tileset[j].setTempTexture(TextureContainer::getInstance()->getTexture(sign, sost));
-
-
 		}
 		tilesets.push_back(tileset);
 	}
@@ -134,7 +132,7 @@ void Editor::updateFile() {
 		for (int j = 0; j < 50; j++) {
 			f << map[i][j] << " ";
 		}
-		f << std::endl;
+		f << "\n";
 	}
 	f.close();
 }

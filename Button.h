@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 
 enum button_states{ BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
@@ -48,5 +49,10 @@ private:
 	sf::RectangleShape shape;
 	sf::Font font;
 	sf::Text text;
+
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
+	bool can_play_sound;
+
 };
 #endif

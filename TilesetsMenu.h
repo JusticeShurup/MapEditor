@@ -16,6 +16,7 @@ public:
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
 	sf::FloatRect getGlobalBounds();
+	sf::RectangleShape* getBackground();
 
 	void setSize(float widht, float height);
 	void setSize(sf::Vector2f size);
