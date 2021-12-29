@@ -8,11 +8,12 @@ Editor::Editor()
 	  camera(new Camera(1920/2, 1920/2, 1000, 1000))
 {}
 
-Editor::Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera) :
+Editor::Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera, bool* pause) :
 	tilesets_menu(TilesetsMenu(sf::Vector2f(1920/3, 1080), sf::Vector2f(0, 0), currentTileset)),
-	camera(camera)
+	camera(camera), 
+	pause(pause)
 {
-
+	time_last_opening = 0;
 	can_set_tileset = true;
 	currentTileset = new Tileset();
 	textureContainer = TextureContainer::getInstance();
@@ -77,12 +78,15 @@ void Editor::rotateCurrentTileset(int8_t direction) {
 
 }
 
-void Editor::update(Camera& camera){
+void Editor::update(Camera& camera, float delta_time){
 	float x = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x;
 	float y = window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y;
 
-	tilesets_menu.update(*event, camera, sf::Vector2f(x, y));
 	can_set_tileset = !tilesets_menu.contains(sf::Vector2f(x, y));
+	tilesets_menu.update(*event, camera, sf::Vector2f(x, y));
+	can_set_tileset ? time_last_opening += delta_time : time_last_opening = 0;
+	!(*pause) ? time_last_opening += delta_time : time_last_opening = 0;
+
 
 	if (event->type == sf::Event::KeyReleased) {
 		if (event->key.code == sf::Keyboard::Left) rotateCurrentTileset(-1);
@@ -98,20 +102,22 @@ void Editor::update(Camera& camera){
 			if (tileset.getShape()->getGlobalBounds().contains(x, y)) {
 				tileset.getShape()->setOutlineThickness(2);
 				tileset.setTexture(currentTileset->getTexture());
-				if ((event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Left || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) && can_set_tileset) {
-					if (tileset.getSign() != currentTileset->getSign()) {
-						tileset.setTempTexture(currentTileset->getTexture());
-						tileset.setSign(currentTileset->getSign());
-						map[i][j] = currentTileset->getSign() + "S" + std::to_string(int(currentTileset->getSost()));
-						updateFile();
+				if (time_last_opening > 0.1) { // TO FIX BAG (Close menu, but after that tileset installed immediately)
+					if ((event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Left || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) && can_set_tileset) {
+						if (tileset.getSign() != currentTileset->getSign()) {
+							tileset.setTempTexture(currentTileset->getTexture());
+							tileset.setSign(currentTileset->getSign());
+							map[i][j] = currentTileset->getSign() + "S" + std::to_string(int(currentTileset->getSost()));
+							updateFile();
+						}
 					}
-				}
-				else if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Right || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && can_set_tileset) {
-					if (tileset.getSign() != "snowS1") {
-						tileset.setTempTexture(TextureContainer::getInstance()->getTexture("snow", 1));
-						tileset.setSign("snowS1");
-						map[i][j] = "snowS1";
-						updateFile();
+					else if (event->type == event->MouseButtonReleased && event->mouseButton.button == sf::Mouse::Right || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && can_set_tileset) {
+						if (tileset.getSign() != "snowS1") {
+							tileset.setTempTexture(TextureContainer::getInstance()->getTexture("snow", 1));
+							tileset.setSign("snowS1");
+							map[i][j] = "snowS1";
+							updateFile();
+						}
 					}
 				}
 			}

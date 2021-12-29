@@ -11,7 +11,7 @@ class Editor
 {
 public: 
 	Editor();
-	Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera);
+	Editor(sf::RenderWindow* window, sf::Event *event, Camera* camera, bool* pause);
 	~Editor();
 
 	void initWindow();
@@ -20,7 +20,7 @@ public:
 
 	void rotateCurrentTileset(int8_t direction);// 1 - Clockwise, -1 - CounterClockWise
 
-	void update(Camera& camera);
+	void update(Camera& camera, float delta_time);
 	void updateFile();
 
 	void render();
@@ -38,6 +38,9 @@ private:
 
 	Tileset* currentTileset;
 	bool can_set_tileset;
+	bool* pause;
+	float time_last_opening; // Time before last opening tilesets menu
+
 
 	TilesetsMenu tilesets_menu;
 

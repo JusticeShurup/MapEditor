@@ -24,6 +24,7 @@ private:
 	bool active;
 	bool pause; 
 	sf::Event event;
+	sf::Clock clock;
 
 	Camera camera;
 	Editor* editor;

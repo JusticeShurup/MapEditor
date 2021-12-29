@@ -9,7 +9,7 @@ public:
 	~Camera();
 	sf::View& getView();
 
-	void update(sf::Event& event);
+	void update(sf::Event& event, float delta_time);
 
 	void setCanZoom(bool can_zoom);
 	bool getIsZoomed();

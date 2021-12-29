@@ -9,7 +9,7 @@ Application::Application() :
 	window->setView(camera.getView());
 	
 	is_running = false;
-	editor = new Editor(window, &event, &camera);
+	editor = new Editor(window, &event, &camera, &pause);
 	menu = new Menu(this);
 	active = true;
 	pause = true;
@@ -38,6 +38,7 @@ void Application::run() {
 }
 
 void Application::update() {
+	float delta_time = clock.restart().asSeconds();
 	while (window->pollEvent(event)) {
 		if (event.type == sf::Event::Closed) {
 			is_running = false;
@@ -54,16 +55,17 @@ void Application::update() {
 				pause = !pause;
 			}
 		}
-	}
+	}	
 	if (active && !pause) {
-		camera.update(event);
+		camera.update(event, delta_time);
 		window->setView(camera.getView());
-		editor->update(camera);
+		editor->update(camera, delta_time);
 	}
 	else if (active) {
 		camera.getView().setCenter(1920 / 2, 1080 / 2);
 		window->setView(camera.getView());
 		menu->update(event, sf::Vector2f(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x, window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y));
+		editor->update(camera, delta_time);
 	}
 }
 

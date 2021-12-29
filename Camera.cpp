@@ -16,18 +16,18 @@ sf::View& Camera::getView() {
 	return view;
 }
 
-void Camera::update(sf::Event& event) {
+void Camera::update(sf::Event& event, float delta_time) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		center.y += -1;
+		center.y += -500 * delta_time;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		center.y += 1;
+		center.y += 500 * delta_time;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		center.x += -1.5;
+		center.x += -750 * delta_time;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		center.x += 1.5;
+		center.x += 750 * delta_time;
 	}
 	view.setCenter(center);
 

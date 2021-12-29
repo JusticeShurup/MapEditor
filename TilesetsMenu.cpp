@@ -24,7 +24,7 @@ TilesetsMenu::TilesetsMenu(sf::Vector2f size, sf::Vector2f position, Tileset* cu
 
 void TilesetsMenu::setPosition(float x, float y) {
 	background.setPosition(sf::Vector2f(x, y));
-	open_menu_button.setPosition(is_open ? x + background.getGlobalBounds().width - 1 : x,
+	open_menu_button.setPosition(x + background.getGlobalBounds().width - 1,
 								 y + background.getGlobalBounds().height / 2 - open_menu_button.getGlobalBounds().height);
 }
 
@@ -82,7 +82,8 @@ void TilesetsMenu::update(sf::Event& event, Camera& camera, sf::Vector2f mouse_p
 		camera.setCanZoom(!open());
 	}
 
-	setPosition(camera.getView().getCenter().x - camera.getView().getSize().x / 2,
+	//std::cout << background.getPosition().x << " " << background.getPosition().y << " " << sf::Mouse::getPosition().x << " " << sf::Mouse::getPosition().y << std::endl;
+	setPosition(is_open ? camera.getView().getCenter().x - camera.getView().getSize().x / 2 : camera.getView().getCenter().x - camera.getView().getSize().x /2 - background.getGlobalBounds().width,
 				camera.getView().getCenter().y - camera.getView().getSize().y / 2);
 	
 	if (is_open) {
