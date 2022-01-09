@@ -5,6 +5,7 @@ Tileset::Tileset() {
 	shape = new sf::RectangleShape(sf::Vector2f(32, 32));
 	shape->setOutlineColor(sf::Color::Green);
 	texture = nullptr;
+	temp_texture = nullptr;
 	sost = 1;
 }
 
@@ -14,6 +15,7 @@ Tileset::Tileset(sf::Vector2f position) {
 	shape->setOutlineColor(sf::Color::Green);
 	texture = nullptr;
 	temp_texture = nullptr;
+	sost = 1;
 }
 
 Tileset::Tileset(std::string filename, std::string sign, sf::Vector2f size, sf::Vector2f position, uint8_t sost) {

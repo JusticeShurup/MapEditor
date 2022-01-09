@@ -1,6 +1,6 @@
 Land 1
 snow Tilesets/snow.png
-Roads 15
+Roads 17
 a Tilesets/asphalt.png
 aswhrdln Tilesets/asphalt_with_roadline_left.png
 aswhrdlnt Tilesets/asphalt_with_roadline_turn.png
@@ -16,3 +16,5 @@ v Tilesets/road_vertical.png
 V Tilesets/road_vertical2.png
 l Tilesets/turn_left.png
 r Tilesets/turn_right.png
+cr Tilesets/crosswalk.png
+cra Tilesets/adjoinedcrosswalk.png

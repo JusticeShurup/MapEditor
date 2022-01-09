@@ -18,7 +18,7 @@ Button::Button(float widht, float height, float posX, float posY, std::string na
 	font.loadFromFile("Inconsolata_Condensed-Bold.ttf");
 
 	text.setFont(font);
-	text.setCharacterSize(75);
+	text.setCharacterSize(50);
 	text.setFillColor(Color::Black);
 	text.setString(name);
 	text.setPosition(shape.getPosition().x + ((shape.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2)),
@@ -26,7 +26,34 @@ Button::Button(float widht, float height, float posX, float posY, std::string na
 
 	buffer.loadFromFile("Sounds/menu_item_howered.wav");
 	sound.setBuffer(buffer);
-	can_play_sound = true;
+	canPlaySound = true;
+	shape_is_hide = false;
+}
+
+Button::Button(float widht, float height, float posX, float posY, std::string name, bool hide_shape)
+	: widht(widht), height(height), posX(posX), posY(posY), buttonText(name)
+{
+
+	textIdleColor = sf::Color::Black;
+
+	state = BTN_IDLE;
+	shape = RectangleShape(Vector2f(widht, height));
+	shape.setPosition(Vector2f(posX, posY));
+	shape.setOutlineThickness(5);
+
+	font.loadFromFile("Inconsolata_Condensed-Bold.ttf");
+
+	text.setFont(font);
+	text.setCharacterSize(50);
+	text.setFillColor(Color::Black);
+	text.setString(name);
+	text.setPosition(shape.getPosition().x + ((shape.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2)),
+					 shape.getPosition().y);
+
+	buffer.loadFromFile("Sounds/menu_item_howered.wav");
+	sound.setBuffer(buffer);
+	canPlaySound = true;
+	shape_is_hide = hide_shape;
 }
 
 Button::Button(float widht, float height, float posX, float posY, std::string name, unsigned int letters_size)
@@ -57,7 +84,7 @@ bool Button::isClicked() {
 
 void Button::setPosition(float x, float y) {
 	shape.setPosition(x, y);
-	text.setPosition(x, y);
+	text.setPosition(x + (shape.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2), y);
 
 }
 
@@ -67,12 +94,24 @@ void Button::setPosition(sf::Vector2f position) {
 					 position.y);
 }
 
-void Button::setColor(sf::Color color) {
-	textIdleColor = color;
+void Button::setTextColor(std::string sost, sf::Color color) {
+	if (sost == "idle") textIdleColor = color;
+	else if (sost == "hover") textHoverColor = color;
+	else if (sost == "active") textActiveColor = color;
 }
 
-sf::Text Button::getText() {
-	return text;
+void Button::setShapeColor(std::string sost, sf::Color color) {
+	if (sost == "idle") shapeIdleColor = color;
+	else if (sost == "hover") shapeHoverColor = color;
+	else if (sost == "active") shapeActiveColor = color;
+}
+
+sf::RectangleShape* Button::getShape() {
+	return &shape;
+}
+
+sf::Text* Button::getText() {
+	return &text;
 }
 
 void Button::update(Vector2f pos, Event& event) {
@@ -82,8 +121,8 @@ void Button::update(Vector2f pos, Event& event) {
 	{
 		state = BTN_HOVER;
 
-		if (can_play_sound) sound.play();
-		can_play_sound = false;
+		if (canPlaySound) sound.play();
+		canPlaySound = false;
 		//Pressed
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left)
 		{
@@ -91,29 +130,28 @@ void Button::update(Vector2f pos, Event& event) {
 		}
 	}
 	else {
-		can_play_sound = true;
+		canPlaySound = true;
 	}
 
 	switch (state)
 	{
 	case BTN_IDLE:
-		this->shape.setFillColor(Color::White);
-		this->shape.setOutlineThickness(0);
+		this->shape.setFillColor(shapeIdleColor);
+		this->shape.setOutlineThickness(5);
 		this->text.setFillColor(textIdleColor);
-		this->shape.setOutlineColor(Color::White);
+		this->shape.setOutlineColor(Color::Black);
 		break;
 
 	case BTN_HOVER:
-		this->shape.setFillColor(Color::White);
+		this->shape.setFillColor(shapeHoverColor);
 		this->shape.setOutlineThickness(5);
-		this->shape.setFillColor(Color::Green);
-		this->text.setFillColor(Color::Red);
+		this->text.setFillColor(textHoverColor);
 		this->shape.setOutlineColor(Color(127, 127, 127));
 		break;
 
 	case BTN_ACTIVE:
-		this->shape.setFillColor(Color::White);
-		this->text.setFillColor(Color::Red);
+		this->shape.setFillColor(shapeActiveColor);
+		this->text.setFillColor(textActiveColor);
 		this->shape.setOutlineColor(Color(127, 127, 127));
 		break;
 
@@ -126,6 +164,7 @@ void Button::update(Vector2f pos, Event& event) {
 }
 
 void Button::draw(RenderTarget& target, RenderStates states) const {
+	if (!shape_is_hide) target.draw(shape);
 	target.draw(text);
 }
 

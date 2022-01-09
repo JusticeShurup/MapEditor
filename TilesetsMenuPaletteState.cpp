@@ -3,6 +3,7 @@
 #include "TilesetsMenuMainState.h"
 #include "TextureContainer.h"
 #include <fstream>
+#include <iostream>
 #include "Camera.h"
 
 TilesetsMenuPaletteState::TilesetsMenuPaletteState(TilesetsMenu* tilesets_menu, std::string name, Tileset* current_tileset) : TilesetsMenuState(tilesets_menu, current_tileset) {
@@ -29,10 +30,10 @@ TilesetsMenuPaletteState::TilesetsMenuPaletteState(TilesetsMenu* tilesets_menu, 
 	arrow_right_button->setTexture(arrow_texture);
 	main_menu_button->setTexture(main_menu_texture);
 
-	std::map<std::string, std::map<uint8_t, sf::Texture*>> textures = TextureContainer::getInstance()->getTexturesByCathegory(category_name->getString());
+	std::map<std::string, std::map<uint8_t, sf::Texture*>> textures = TextureContainer::getInstance()->getTilesetsTexturesByCathegory(category_name->getString());
 	int count = 0;
 	for (auto it = textures.begin(); it != textures.end(); it++) {
-		tilesets_palette.emplace_back(new Tileset(it->second[1], it->first, sf::Vector2f(64, 64), sf::Vector2f(0, 0), 1));
+		tilesets_palette.emplace_back(new Tileset(it->second[1], it->first, sf::Vector2f(64, 64), sf::Vector2f(-10000, -10000), 1));
 	}
 }
 
@@ -57,16 +58,16 @@ void TilesetsMenuPaletteState::update(sf::Event& event, Camera& camera, sf::Vect
 
 
 	category_name->setPosition(x0 + tilesets_menu->getGlobalBounds().width / 2 - category_name->getGlobalBounds().width / 2,
-							   y0 + category_name->getGlobalBounds().height / 2 + 5);
+							   y0 + category_name->getGlobalBounds().height / 2 + 6);
 
-	arrow_left_button->setPosition(x0 + arrow_left_button->getGlobalBounds().width,
-								   y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height);
+	arrow_left_button->setPosition(x0 + arrow_left_button->getGlobalBounds().width + 30,
+								   y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height - 25);
 	
-	arrow_right_button->setPosition(x0 + tilesets_menu->getSize().x - arrow_right_button->getGlobalBounds().width, 
-									y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height);
+	arrow_right_button->setPosition(x0 + tilesets_menu->getSize().x - arrow_right_button->getGlobalBounds().width -30, 
+									y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height - 25);
 
 	main_menu_button->setPosition(x0 + tilesets_menu->getSize().x / 2 - main_menu_button->getGlobalBounds().width/2, 
-								  y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height);
+								  y0 + tilesets_menu->getSize().y - arrow_left_button->getGlobalBounds().height - 25);
 
 	int current_tileset = 0;
 	int count_tilesets = tilesets_palette.size();
@@ -79,8 +80,8 @@ void TilesetsMenuPaletteState::update(sf::Event& event, Camera& camera, sf::Vect
 				tilesets_palette[current_tileset]->getShape()->setOutlineThickness(6);
 				if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
 					this->current_tileset->setSost(1);
-					this->current_tileset->setImage(TextureContainer::getInstance()->getTexture(tilesets_palette[current_tileset]->getSign(), 1));
-					this->current_tileset->setTexture(TextureContainer::getInstance()->getLink(tilesets_palette[current_tileset]->getSign()));
+					this->current_tileset->setImage(TextureContainer::getInstance()->getTilesetTexture(tilesets_palette[current_tileset]->getSign(), 1));
+					this->current_tileset->setTexture(TextureContainer::getInstance()->getTilesetLink(tilesets_palette[current_tileset]->getSign()));
 					this->current_tileset->setSign(tilesets_palette[current_tileset]->getSign());
 				}
 			}

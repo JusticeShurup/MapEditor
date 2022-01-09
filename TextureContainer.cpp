@@ -5,10 +5,10 @@
 TextureContainer* TextureContainer::instance = nullptr;
 
 TextureContainer::TextureContainer() {
-	std::ifstream file("TextureAlphabet.txt");
+	std::ifstream file("TilesetTextureAlphabet.txt");
 	std::string sign;
 	std::string filename;
-	while (true) {
+	while (!file.eof()) {
 		file >> sign >> filename;
 		int tilesets_size = std::atoi(filename.c_str());
 		std::string category_name = sign;
@@ -23,55 +23,125 @@ TextureContainer::TextureContainer() {
 			image->loadFromFile(filename);
 			texture->loadFromFile(filename);
 
-			alphabet_images.emplace(sign, image);
+			alphabet_tilesets_images.emplace(sign, image);
 
 			std::map<uint8_t, sf::Texture*> map;
 			map[1] = texture;
-			alphabet_textures.emplace(sign, map);
+			alphabet_tilesets_textures.emplace(sign, map);
 			alphabet_textures_for_pallete.emplace(sign, map);
 
 			for (int i = 2; i <= 4; i++) {
-				alphabet_textures[sign].emplace(i, rotateTexture(alphabet_textures[sign][i - 1]));
+				alphabet_tilesets_textures[sign].emplace(i, rotateTexture(alphabet_tilesets_textures[sign][i - 1]));
 				alphabet_textures_for_pallete[sign].emplace(i, rotateTexture(alphabet_textures_for_pallete[sign][i - 1]));
 			}
 
-			alphabet_links.emplace(sign, filename);
-			signs.push_back(sign);
-			textures.push_back(texture);
-			links.push_back(filename);
+			alphabet_tilesets_links.emplace(sign, filename);
+			tilesets_signs.push_back(sign);
+			tilesets_textures.push_back(texture);
+			tilesets_links.push_back(filename);
 		}
-		alphabet_textures_pallete.emplace(category_name, alphabet_textures_for_pallete);
-		if (file.eof()) {
-			file.close();
-			return;
-		}
+		alphabet_textures_tilesets_pallete.emplace(category_name, alphabet_textures_for_pallete);
 	}
+	file.close();
+	file.open("GameObjectTextureAlphabet.txt");
+	while (!file.eof()) {
+		file >> sign >> filename;
+		int gameobjects_size = std::atoi(filename.c_str());
+		std::string category_name = sign;
+
+		std::map<std::string, sf::Texture*> alphabet_texture_for_pallete;
+		for (int i = 0; i < gameobjects_size; i++) {
+			file >> sign >> filename; 
+			float width = 0;
+			float heigth = 0;
+
+			file >> width >> heigth;
+			gameobjects_native_size.emplace(sign, sf::Vector2f(width, heigth));
+			file >> width >> heigth;
+			gameobjects_hitbox_size.emplace(sign, sf::Vector2f(width, heigth));
+			file >> width >> heigth;
+			gameobjects_hitbox_position.emplace(sign, sf::Vector2f(width, heigth));
+
+			sf::Image* image = new sf::Image;
+			sf::Texture* texture = new sf::Texture;
+
+			image->loadFromFile(filename);
+			texture->loadFromFile(filename);
+
+			alphabet_gameobjects_images.emplace(sign, image);
+			alphabet_gameobjects_textures.emplace(sign, texture);
+			alphabet_texture_for_pallete.emplace(sign, texture);
+
+			alphabet_gameobjects_links.emplace(sign, filename);
+			gameobjects_names.push_back(sign);
+			gameobjects_textures.push_back(texture);
+			gameobjects_links.push_back(filename);
+		}
+		alphabet_textures_gameobjects_pallete.emplace(category_name, alphabet_texture_for_pallete);
+	}
+	file.close();
 }
 
-sf::Texture* TextureContainer::getTexture(std::string sign, uint8_t sost) {
+//tilesets
+sf::Texture* TextureContainer::getTilesetTexture(std::string sign, uint8_t sost) {
 	if (sost < 1 || sost > 4) sost = 1;
-	return alphabet_textures[sign][sost];
+	return alphabet_tilesets_textures[sign][sost];
 }
 
-std::string TextureContainer::getLink(std::string sign) {
-	return alphabet_links[sign];
+std::string TextureContainer::getTilesetLink(std::string sign) {
+	return alphabet_tilesets_links[sign];
 }
 
-std::vector<sf::Texture*> TextureContainer::getTextures() {
-	return textures;
+std::vector<sf::Texture*> TextureContainer::getTilesetsTextures() {
+	return tilesets_textures;
 }
 
-std::map<std::string, std::map<uint8_t, sf::Texture*>> TextureContainer::getTexturesByCathegory(std::string cathegory_name){
-	return alphabet_textures_pallete[cathegory_name];
+std::map<std::string, std::map<uint8_t, sf::Texture*>> TextureContainer::getTilesetsTexturesByCathegory(std::string cathegory_name){
+	return alphabet_textures_tilesets_pallete[cathegory_name];
 }
 
-std::vector<std::string> TextureContainer::getSigns() {
-	return signs;
+std::vector<std::string> TextureContainer::getTilesetsSigns() {
+	return tilesets_signs;
 }
 
-std::vector<std::string> TextureContainer::getLinks() {
-	return links;
+std::vector<std::string> TextureContainer::getTilesetsLinks() {
+	return tilesets_links;
 }
+//Tilesets
+
+//GameObjects
+sf::Texture* TextureContainer::getGameObjectTexture(std::string name) {
+	return alphabet_gameobjects_textures[name];
+}
+std::string TextureContainer::getGameObjectLink(std::string name) {
+	return alphabet_gameobjects_links[name];
+}
+std::vector<sf::Texture*> TextureContainer::getGameObjectTextures() {
+	return gameobjects_textures;
+}
+
+std::map<std::string, sf::Texture*> TextureContainer::getGameObjectsTexturesByCathegory(std::string cathegory_name) {
+	return alphabet_textures_gameobjects_pallete[cathegory_name];
+}
+std::vector<std::string> TextureContainer::getGameObjectsNames() {
+	return gameobjects_names;
+}
+std::vector<std::string> TextureContainer::getGameObjectsLinks() {
+	return gameobjects_links;
+}
+
+sf::Vector2f TextureContainer::getGameObjectNativeSize(std::string name) {
+	return gameobjects_native_size[name];
+}
+
+sf::Vector2f TextureContainer::getGameObjectHitboxSize(std::string name) {
+	return gameobjects_hitbox_size[name];
+}
+
+sf::Vector2f TextureContainer::getGameObjectHitboxPosition(std::string name) {
+	return gameobjects_hitbox_position[name];
+}
+//GameObjects
 
 sf::Texture* TextureContainer::rotateTexture(sf::Texture* texture) { 
 	sf::Image image = texture->copyToImage();

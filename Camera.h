@@ -19,6 +19,7 @@ public:
 	void setSize(float x, float y);
 	void setSize(sf::Vector2f size);
 
+
 private:
 	sf::View view;
 

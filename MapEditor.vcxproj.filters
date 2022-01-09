@@ -19,6 +19,24 @@
     <Filter Include="Файлы заголовков\MenuStates">
       <UniqueIdentifier>{cbcc3965-9c1d-448e-9df7-5a709d748b27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\TilesetsMenuStates">
+      <UniqueIdentifier>{334695e6-a7ad-404d-a554-3a82708c9473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\TilesetsMenuStates">
+      <UniqueIdentifier>{fe91068b-d602-4201-8435-5c7c87235c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\MapEditorStates">
+      <UniqueIdentifier>{8b9011d9-5d0d-4dab-8993-3e014fc093d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\MapEditorStates">
+      <UniqueIdentifier>{de969685-c50b-4716-a44b-c45da5a14423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\GameObjectsMenuState">
+      <UniqueIdentifier>{54d5cd9c-2fe2-4ca4-814f-b63fc9ac2877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\GameObjectsMenuStates">
+      <UniqueIdentifier>{2978276a-ee78-4719-b5ba-4696be547e31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,15 +57,6 @@
     <ClCompile Include="TextureContainer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="TilesetsMenuState.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="TilesetsMenuPaletteState.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="TilesetsMenuMainState.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="TilesetsMenu.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -62,6 +71,39 @@
     </ClCompile>
     <ClCompile Include="MenuMainState.cpp">
       <Filter>Исходные файлы\MenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="TilesetsMenuMainState.cpp">
+      <Filter>Исходные файлы\TilesetsMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="TilesetsMenuPaletteState.cpp">
+      <Filter>Исходные файлы\TilesetsMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="TilesetsMenuState.cpp">
+      <Filter>Исходные файлы\TilesetsMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorState.cpp">
+      <Filter>Исходные файлы\MapEditorStates</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstLevelEditorState.cpp">
+      <Filter>Исходные файлы\MapEditorStates</Filter>
+    </ClCompile>
+    <ClCompile Include="SecondLevelEditorState.cpp">
+      <Filter>Исходные файлы\MapEditorStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectsMenu.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectsMenuState.cpp">
+      <Filter>Исходные файлы\GameObjectsMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectsMenuMainState.cpp">
+      <Filter>Исходные файлы\GameObjectsMenuStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectsMenuPaletteState.cpp">
+      <Filter>Исходные файлы\GameObjectsMenuStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,15 +122,6 @@
     <ClInclude Include="TextureContainer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TilesetsMenuMainState.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="TilesetsMenuPaletteState.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="TilesetsMenuState.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="TilesetsMenu.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -103,6 +136,39 @@
     </ClInclude>
     <ClInclude Include="MenuMainState.h">
       <Filter>Файлы заголовков\MenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="TilesetsMenuMainState.h">
+      <Filter>Файлы заголовков\TilesetsMenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="TilesetsMenuPaletteState.h">
+      <Filter>Файлы заголовков\TilesetsMenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="TilesetsMenuState.h">
+      <Filter>Файлы заголовков\TilesetsMenuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorState.h">
+      <Filter>Файлы заголовков\MapEditorStates</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstLevelEditorState.h">
+      <Filter>Файлы заголовков\MapEditorStates</Filter>
+    </ClInclude>
+    <ClInclude Include="SecondLevelEditorState.h">
+      <Filter>Файлы заголовков\MapEditorStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectsMenu.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectsMenuState.h">
+      <Filter>Файлы заголовков\GameObjectsMenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectsMenuMainState.h">
+      <Filter>Файлы заголовков\GameObjectsMenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectsMenuPaletteState.h">
+      <Filter>Файлы заголовков\GameObjectsMenuState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

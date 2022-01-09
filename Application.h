@@ -9,6 +9,7 @@ public:
 	Application();
 	~Application();
 
+	Editor* getEditor();
 	void setPause(bool pause);
 	void close();
 
@@ -16,6 +17,7 @@ public:
 	void update();
 	void render();
 
+	friend class Menu;
 private: 
 	sf::RenderWindow* window;
 	sf::ContextSettings settings;
